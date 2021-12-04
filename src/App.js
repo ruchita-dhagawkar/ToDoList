@@ -1,24 +1,53 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = () => {
+
+  const [items, setItems] = useState([]);
+  const [inputList, setInputList] = useState(" ");
+
+  const AddItem = () => {
+    setItems((prev) =>{
+      return [...prev,inputList]
+    });
+    setInputList(" ");
+  }
+
+  const DeleteItem = (id) => {
+    setItems((prev) =>{
+      return prev.filter((arr,index) =>{
+        return index!==id;
+      })
+    })
+  }
+
+  const setInput = (event) => {
+    setInputList(event.target.value);
+  }
+
+  return(
+    <>
+      <div className="mainDiv">
+        <div className="card center_div" style={{width:"18rem"}}>
+          <div className="card-body">
+            <h1 className="card-title">TO DO List</h1>
+            <input type="text" onChange={setInput} placeholder="Enter items..." value={inputList}/>
+            <button onClick={AddItem}> + </button>
+            <ol>
+              {
+                items.map((item,index)=>{
+                  return (
+                    <div>
+                      <li key={index}><button class="btn" onClick={()=>{DeleteItem(index)}}><i class="fa fa-trash"></i></button>{item}</li>
+                    </div>
+                  )
+                })
+              }
+            </ol>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
